@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0
+
+### Added
+
+- `LivenessSummaryMapper` for flutter_liveness_actions-like derived signals
+- Integration examples:
+  - `example/liveness_mapping_example.dart`
+  - `example/backend_validator_example.dart`
+  - `example/flows/remote_lending_flow.dart`
+  - `example/flows/large_transfer_flow.dart`
+  - `example/flows/security_settings_flow.dart`
+- `doc/INTEGRATION_EXAMPLES.md`
+- Tests for mapper + lending / transfer / security-settings scenario flows
+
 ## 0.2.0
 
 ### Added

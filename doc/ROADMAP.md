@@ -24,7 +24,7 @@
 ## 0.3.0 — Integration examples
 
 - Example mapping from `flutter_liveness_actions` audit event to
-  `LivenessInteractionSummary`
+  `LivenessInteractionSummary` (`LivenessSummaryMapper` + example)
 - Example backend validator in Dart
 - Remote lending demo flow
 - Large transfer demo flow

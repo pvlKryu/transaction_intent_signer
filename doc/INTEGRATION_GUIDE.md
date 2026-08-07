@@ -74,18 +74,24 @@ See [WEB_AUTHN_BOUNDARIES.md](WEB_AUTHN_BOUNDARIES.md).
 In a Flutter host app:
 
 ```dart
-final summary = LivenessInteractionSummary(
-  facePresent: event.facePresent,
-  singleFace: event.singleFace,
-  challengeCompleted: event.challengeCompleted,
-  challengeType: event.challengeType,
-  durationMs: event.durationMs,
-  averageProcessingMs: event.averageProcessingMs,
-  rawImagesStored: false,
-  rawImagesUploaded: false,
-  derivedSignalsOnly: true,
+final summary = LivenessSummaryMapper.fromFlutterLivenessActionsLike(
+  faceDetected: event.facePresent,
+  faceCount: event.singleFace ? 1 : 2,
+  challengePassed: event.challengeCompleted,
+  actionType: event.challengeType,
+  sessionDurationMs: event.durationMs,
+  avgFrameProcessingMs: event.averageProcessingMs?.toDouble(),
 );
 ```
+
+Runnable mapping and backend demos:
+
+```bash
+dart run example/liveness_mapping_example.dart
+dart run example/backend_validator_example.dart
+```
+
+See [INTEGRATION_EXAMPLES.md](INTEGRATION_EXAMPLES.md).
 
 Keep raw media out of this package’s artifacts unless your institution’s
 privacy program explicitly requires and governs that data elsewhere.

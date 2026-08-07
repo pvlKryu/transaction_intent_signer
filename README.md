@@ -98,7 +98,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^0.2.0
+  transaction_intent_signer: ^0.3.0
 ```
 
 ```bash
@@ -314,27 +314,28 @@ Conservative summary:
 
 ## Integration with flutter_liveness_actions
 
-Host Flutter apps can map derived liveness signals into `LivenessInteractionSummary` without coupling this package to Flutter:
+Host Flutter apps can map derived liveness signals into `LivenessInteractionSummary`
+without coupling this package to Flutter:
 
 ```dart
-// Pseudocode in the host Flutter app — not part of this package.
-final summary = LivenessInteractionSummary(
-  facePresent: livenessEvent.facePresent,
-  singleFace: livenessEvent.singleFace,
-  challengeCompleted: livenessEvent.challengeCompleted,
-  challengeType: livenessEvent.challengeType,
-  durationMs: livenessEvent.durationMs,
-  averageProcessingMs: livenessEvent.averageProcessingMs,
-  rawImagesStored: false,
-  rawImagesUploaded: false,
-  derivedSignalsOnly: true,
-  metrics: {
-    'source': 'flutter_liveness_actions',
-  },
+final summary = LivenessSummaryMapper.fromFlutterLivenessActionsLike(
+  faceDetected: livenessEvent.facePresent,
+  faceCount: livenessEvent.singleFace ? 1 : 2,
+  challengePassed: livenessEvent.challengeCompleted,
+  actionType: livenessEvent.challengeType,
+  sessionDurationMs: livenessEvent.durationMs,
+  avgFrameProcessingMs: livenessEvent.averageProcessingMs?.toDouble(),
 );
 ```
 
-See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) for backend and mobile integration notes.
+Or run the illustrative adapter example:
+
+```bash
+dart run example/liveness_mapping_example.dart
+```
+
+See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) and
+[doc/INTEGRATION_EXAMPLES.md](doc/INTEGRATION_EXAMPLES.md).
 
 ## Documentation
 
@@ -343,6 +344,7 @@ See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) for backend and mobile 
 - [Audit trails](doc/AUDIT_TRAILS.md)
 - [Threat model](doc/THREAT_MODEL.md)
 - [Integration guide](doc/INTEGRATION_GUIDE.md)
+- [Integration examples](doc/INTEGRATION_EXAMPLES.md)
 - [WebAuthn boundaries](doc/WEB_AUTHN_BOUNDARIES.md)
 - [Roadmap](doc/ROADMAP.md)
 
@@ -352,7 +354,7 @@ See [doc/ROADMAP.md](doc/ROADMAP.md) for the full plan. Short version:
 
 - **0.1.0** — Core intent, hashing, challenge, audit assertion
 - **0.2.0** — Stronger verification results, assertion metadata, compact envelope exploration
-- **0.3.0** — Integration examples
+- **0.3.0** — Integration examples (liveness mapping, backend validator, lending / transfer / security flows)
 - **0.4.0** — Mobile reference app support
 - **1.0.0** — Stable API and pub.dev release readiness
 

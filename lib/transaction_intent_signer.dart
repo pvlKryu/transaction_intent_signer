@@ -27,6 +27,7 @@ export 'src/intent/intent_metadata.dart';
 export 'src/intent/transaction_intent.dart';
 export 'src/intent/transaction_intent_type.dart';
 export 'src/liveness/liveness_interaction_summary.dart';
+export 'src/liveness/liveness_summary_mapper.dart';
 export 'src/signing/assertion_signer.dart';
 export 'src/signing/assertion_verifier.dart';
 export 'src/signing/demo_hmac_signer.dart';

@@ -2,104 +2,90 @@
 
 import 'package:transaction_intent_signer/transaction_intent_signer.dart';
 
+import 'backend_validator_example.dart';
+import 'flows/large_transfer_flow.dart';
+import 'flows/remote_lending_flow.dart';
+import 'flows/security_settings_flow.dart';
+import 'liveness_mapping_example.dart';
+import 'support/demo_helpers.dart';
+
+/// Runs the 0.3.0 integration example suite.
 void main() {
-  print('=== transaction_intent_signer demo ===\n');
+  print('=== transaction_intent_signer 0.3.0 integration examples ===');
 
-  final now = DateTime.now().toUtc();
-
-  // 1) Create a loan offer intent
-  final intent = TransactionIntent(
-    intentId: 'intent_loan_demo_001',
-    operationId: 'loan_offer_789',
-    operationType: TransactionIntentType.confirmLoanOffer,
-    customerReference: 'customer_456',
-    institutionReference: 'community_bank_demo',
-    operationTerms: const {
-      'loanAmount': 15000,
-      'currency': 'USD',
-      'apr': 12.5,
-      'termMonths': 36,
-      'monthlyPayment': 501.23,
-    },
-    createdAt: now,
-    expiresAt: now.add(const Duration(hours: 1)),
-    metadata: const IntentMetadata(channel: 'mobile_app'),
+  // 1) Liveness mapping
+  section('1) flutter_liveness_actions mapping');
+  const event = SampleFlutterLivenessAuditEvent(
+    faceDetected: true,
+    faceCount: 1,
+    challengePassed: true,
+    actionType: 'turn_head_left',
+    sessionDurationMs: 4200,
+    avgFrameProcessingMs: 38.4,
+    actionsCompleted: ['blink', 'turn_head_left'],
+    sdkVersion: 'illustrative-1.0.0',
   );
+  final summary = mapFlutterLivenessActionsEvent(event);
+  print(prettyJson(summary.toJson()));
 
-  // 2) Hash operation terms
-  const hasher = OperationTermsHasher(includeCanonicalPayload: true);
-  final termsHash = hasher.sha256Canonical(intent.operationTerms);
-  print('Operation terms hash: ${termsHash.value}');
-  print('Canonical payload: ${termsHash.canonicalPayload}\n');
+  // 2) Remote lending
+  section('2) Remote lending flow');
+  final lendingNow = DateTime.utc(2026, 8, 7, 16);
+  final lending = runRemoteLendingFlow(clock: lendingNow);
+  print('assertionId=${lending.assertionId} type=${lending.operationType}');
 
-  // 3) Build challenge bound to server nonce
-  final challenge = IntentChallengeBuilder().build(
-    intent: intent,
-    operationTermsHash: termsHash,
-    serverNonce: 'srv_nonce_demo_9f3a',
-    expiresIn: const Duration(minutes: 10),
-    issuedAt: now,
-    challengeId: 'chal_demo_001',
+  // 3) Large transfer
+  section('3) Large transfer flow');
+  final xfer = runLargeTransferFlow(clock: DateTime.utc(2026, 8, 7, 17));
+  print('assertionId=${xfer.assertionId} type=${xfer.operationType}');
+
+  // 4) Security settings
+  section('4) Security settings flow');
+  final security = runSecuritySettingsFlow(clock: DateTime.utc(2026, 8, 7, 18));
+  print('assertionId=${security.assertionId} type=${security.operationType}');
+
+  // 5) Backend validator against lending assertion
+  section('5) Backend validator');
+  final store = MockChallengeStore();
+  const terms = <String, Object?>{
+    'loanAmount': 15000,
+    'currency': 'USD',
+    'apr': 12.5,
+    'termMonths': 36,
+    'monthlyPayment': 501.23,
+    'productCode': 'PERSONAL_INSTALLMENT',
+    'eConsentTextHash': 'sha256:demo_consent_hash',
+  };
+
+  // Rebuild challenge binding from assertion fields for the demo store.
+  final challenge = IntentChallenge(
+    challengeId: lending.challengeId,
+    intentId: lending.intentId,
+    operationId: lending.operationId,
+    operationType: lending.operationType,
+    operationTermsHash: lending.operationTermsHash,
+    serverNonce: lending.serverNonceReference,
+    issuedAt: lendingNow,
+    expiresAt: lendingNow.add(const Duration(minutes: 10)),
+    challengePayload: const {},
   );
-  print('Challenge id: ${challenge.challengeId}');
-  print('Challenge payload:\n${prettyJson(challenge.challengePayload)}\n');
+  store.save(challenge);
 
-  // 4) Simulated passkey confirmation
-  final confirmation = AuthenticatorConfirmation.simulated(
-    confirmedAt: now.add(const Duration(seconds: 30)),
-    credentialReference: 'sim_cred_loan_demo',
+  final validator = BackendAssertionValidator(
+    challengeStore: store,
+    assertionVerifier: AuditAssertionVerifier(verifier: demoVerifier()),
   );
-
-  // 5) Optional liveness-aware summary from host app
-  const liveness = LivenessInteractionSummary(
-    facePresent: true,
-    singleFace: true,
-    challengeCompleted: true,
-    challengeType: 'turn_head_left',
-    durationMs: 4200,
-    averageProcessingMs: 38,
+  final validation = validator.validate(
+    assertion: lending,
+    authoritativeOperationTerms: terms,
+    now: lendingNow.add(const Duration(minutes: 1)),
   );
+  print(prettyJson(validation.toJson()));
 
-  // 6) Build signed audit assertion
-  final signer = DemoHmacSigner('demo-only-secret-do-not-use-in-prod');
-  final assertion = AuditAssertionBuilder(signer: signer).build(
-    intent: intent,
-    challenge: challenge,
-    authenticatorConfirmation: confirmation,
-    livenessInteractionSummary: liveness,
-    createdAt: now.add(const Duration(seconds: 45)),
-    assertionId: 'assert_demo_001',
-    assertionMetadata: const AssertionMetadata(
-      producer: 'example',
-      channel: 'mobile_app',
-      correlationId: 'corr_demo_001',
-    ),
-  );
+  // 6) Compact envelope snapshot
+  section('6) Compact envelope');
+  final compact = const CompactAssertionEnvelope().encode(lending);
+  print('segments=${compact.split('.').length}');
 
-  print('Signed audit assertion:\n${prettyJson(assertion.toJson())}\n');
-
-  // 7) Verify assertion
-  final verifier = AuditAssertionVerifier(
-    verifier: DemoHmacVerifier('demo-only-secret-do-not-use-in-prod'),
-  );
-  final ok = verifier.verify(assertion, challenge: challenge, now: now);
-  print('Verification valid: ${ok.isValid}');
-  print('Failure code: ${ok.failureCode.wireName}');
-  print('Checks: ${ok.checks.map((c) => '${c.name}=${c.passed}').join(', ')}');
-
-  // 8) Demonstrate tampering detection
-  final tampered = assertion.copyWith(
-    unsignedPayload: {
-      ...assertion.unsignedPayload,
-      'operationTermsHash': 'sha256:tampered',
-    },
-  );
-  final bad = verifier.verify(tampered, challenge: challenge, now: now);
-  print('Tampered verification valid: ${bad.isValid}');
-  print('Tampered failure code: ${bad.failureCode.wireName}');
-  print('Tampered failure reason: ${bad.failureReason}');
-
-  // 9) Optional compact envelope exploration
-  final compact = const CompactAssertionEnvelope().encode(assertion);
-  print('\nCompact envelope segments: ${compact.split('.').length}');
+  print('\nAll integration examples completed.');
 }

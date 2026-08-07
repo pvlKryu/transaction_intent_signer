@@ -4,7 +4,7 @@ abstract final class TransactionIntentSignerInfo {
   static const String packageName = 'transaction_intent_signer';
 
   /// Current package version.
-  static const String packageVersion = '0.2.0';
+  static const String packageVersion = '0.3.0';
 
   /// Assertion schema version embedded in artifacts.
   ///
