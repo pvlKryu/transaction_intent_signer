@@ -1,0 +1,29 @@
+name: transaction_intent_signer
+description: >-
+  Pure Dart utilities for transaction intent challenges, operation terms
+  hashing, optional liveness-aware summaries, and audit-friendly signed
+  assertions.
+version: 0.1.0
+homepage: https://github.com/pvlKryu/transaction_intent_signer
+repository: https://github.com/pvlKryu/transaction_intent_signer
+issue_tracker: https://github.com/pvlKryu/transaction_intent_signer/issues
+
+topics:
+  - dart
+  - fintech
+  - security
+  - audit
+  - authentication
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  collection: ^1.18.0
+  crypto: ^3.0.3
+  meta: ^1.11.0
+  uuid: ^4.4.0
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.25.0

@@ -1,0 +1,10 @@
+name: transaction_intent_signer_example
+description: Example for transaction_intent_signer
+publish_to: none
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  transaction_intent_signer:
+    path: ../
