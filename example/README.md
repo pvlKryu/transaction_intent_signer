@@ -16,12 +16,14 @@ dart run example/main.dart
 | Command | Description |
 | --- | --- |
 | `dart run example/main.dart` | Full integration suite |
+| `dart run example/cookbook.dart` | Short 1.0 cookbook snippets |
 | `dart run example/mobile_reference_example.dart` | Session / share / dashboard helpers |
 | `dart run example/liveness_mapping_example.dart` | flutter_liveness_actions-shaped mapping |
 | `dart run example/backend_validator_example.dart` | Reference backend validator |
 | `dart run example/flows/remote_lending_flow.dart` | Loan offer confirmation |
 | `dart run example/flows/large_transfer_flow.dart` | Large transfer confirmation |
 | `dart run example/flows/security_settings_flow.dart` | Security settings confirmation |
+| `dart run example/flows/add_new_payee_flow.dart` | Add new payee confirmation |
 
 See [doc/INTEGRATION_EXAMPLES.md](../doc/INTEGRATION_EXAMPLES.md) and
 [doc/MOBILE_REFERENCE.md](../doc/MOBILE_REFERENCE.md).

@@ -12,7 +12,7 @@ claim identity, fraud, credit, or legal compliance outcomes.
 {
   "schemaVersion": "tis_demo_dashboard_v1",
   "packageName": "transaction_intent_signer",
-  "packageVersion": "0.4.0",
+  "packageVersion": "1.0.0",
   "generatedAt": "2026-08-07T20:00:00.000Z",
   "summary": {
     "total": 1,

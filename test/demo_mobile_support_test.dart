@@ -188,7 +188,7 @@ void main() {
 
       final roundTrip = DemoDashboardSnapshot.fromJson(snapshot.toJson());
       expect(roundTrip.entries.single.assertionId, 'assert_demo');
-      expect(roundTrip.packageVersion, '0.4.0');
+      expect(roundTrip.packageVersion, '1.0.0');
     });
   });
 }

@@ -3,15 +3,16 @@
 import 'package:transaction_intent_signer/transaction_intent_signer.dart';
 
 import 'backend_validator_example.dart';
+import 'flows/add_new_payee_flow.dart';
 import 'flows/large_transfer_flow.dart';
 import 'flows/remote_lending_flow.dart';
 import 'flows/security_settings_flow.dart';
 import 'liveness_mapping_example.dart';
 import 'support/demo_helpers.dart';
 
-/// Runs the 0.3.0 integration example suite.
+/// Runs the integration example suite.
 void main() {
-  print('=== transaction_intent_signer 0.3.0 integration examples ===');
+  print('=== transaction_intent_signer 1.0.0 integration examples ===');
 
   // 1) Liveness mapping
   section('1) flutter_liveness_actions mapping');
@@ -43,6 +44,11 @@ void main() {
   section('4) Security settings flow');
   final security = runSecuritySettingsFlow(clock: DateTime.utc(2026, 8, 7, 18));
   print('assertionId=${security.assertionId} type=${security.operationType}');
+
+  // 4b) Add new payee
+  section('4b) Add new payee flow');
+  final payee = runAddNewPayeeFlow(clock: DateTime.utc(2026, 8, 7, 19));
+  print('assertionId=${payee.assertionId} type=${payee.operationType}');
 
   // 5) Backend validator against lending assertion
   section('5) Backend validator');

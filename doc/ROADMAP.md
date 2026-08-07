@@ -2,46 +2,35 @@
 
 ## 0.1.0 — Core intent, hashing, challenge, audit assertion
 
-- `TransactionIntent`
-- `TransactionIntentType`
-- `CanonicalJsonEncoder`
-- `OperationTermsHasher`
-- `IntentChallenge`
-- `AuthenticatorConfirmation`
-- `LivenessInteractionSummary`
-- `SignedAuditAssertion`
-- `DemoHmacSigner` / `DemoHmacVerifier`
-- README, docs, tests, example
+Completed.
 
 ## 0.2.0 — Better assertion schema and verifier
 
-- Stronger validation result model (`failureCode`, `checks`)
-- More assertion metadata (`AssertionMetadata`, `schemaVersion`)
-- JWS-style assertion format exploration (`CompactAssertionEnvelope`)
-- More tamper detection tests
-- More documentation around audit trails (`doc/AUDIT_TRAILS.md`)
+Completed.
 
 ## 0.3.0 — Integration examples
 
-- Example mapping from `flutter_liveness_actions` audit event to
-  `LivenessInteractionSummary` (`LivenessSummaryMapper` + example)
-- Example backend validator in Dart
-- Remote lending demo flow
-- Large transfer demo flow
-- Security settings demo flow
+Completed.
 
 ## 0.4.0 — Mobile reference app support
 
-- Shared models for Flutter demo app (`DemoConfirmationSession`)
-- Copy/share assertion helpers (`AssertionShareHelper`)
-- Better pretty JSON output (`PrettyJsonOptions`, `prettyCanonicalJson`)
-- Demo dashboard schema (`DemoDashboardSnapshot`, `tis_demo_dashboard_v1`)
+Completed.
 
 ## 1.0.0 — Stable API
 
-- API review
-- SemVer stability docs
-- More examples
-- CI
-- pub.dev release readiness
-- external technical review feedback incorporated
+Completed:
+
+- API review (`doc/API.md`)
+- SemVer stability docs (`doc/SEMVER.md`)
+- More examples (cookbook, add-new-payee flow)
+- CI (`.github/workflows/ci.yml`)
+- pub.dev release readiness (`doc/PUBLISHING.md`)
+- technical review notes incorporated (`doc/TECHNICAL_REVIEW.md`)
+
+## After 1.0.0 (future)
+
+- Production `AssertionSigner` examples (asymmetric / KMS-backed)
+- Optional stronger JWS profile exploration
+- Additional host SDK mapping adapters
+- External security review feedback incorporation
+- Broader Flutter reference app (separate repository)

@@ -2,6 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/transaction_intent_signer.svg)](https://pub.dev/packages/transaction_intent_signer)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/pvlKryu/transaction_intent_signer/actions/workflows/ci.yml/badge.svg)](https://github.com/pvlKryu/transaction_intent_signer/actions/workflows/ci.yml)
 
 Pure Dart package for building **audit-friendly transaction intent confirmation flows**.
 
@@ -98,7 +99,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^0.4.0
+  transaction_intent_signer: ^1.0.0
 ```
 
 ```bash
@@ -366,6 +367,8 @@ dart run example/mobile_reference_example.dart
 ## Documentation
 
 - [Architecture](doc/ARCHITECTURE.md)
+- [Public API review](doc/API.md)
+- [SemVer policy](doc/SEMVER.md)
 - [Assertion schema](doc/ASSERTION_SCHEMA.md)
 - [Audit trails](doc/AUDIT_TRAILS.md)
 - [Threat model](doc/THREAT_MODEL.md)
@@ -373,18 +376,15 @@ dart run example/mobile_reference_example.dart
 - [Integration examples](doc/INTEGRATION_EXAMPLES.md)
 - [Mobile reference support](doc/MOBILE_REFERENCE.md)
 - [Demo dashboard schema](doc/DEMO_DASHBOARD_SCHEMA.md)
+- [Technical review](doc/TECHNICAL_REVIEW.md)
+- [Publishing checklist](doc/PUBLISHING.md)
 - [WebAuthn boundaries](doc/WEB_AUTHN_BOUNDARIES.md)
 - [Roadmap](doc/ROADMAP.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Roadmap
 
-See [doc/ROADMAP.md](doc/ROADMAP.md) for the full plan. Short version:
-
-- **0.1.0** — Core intent, hashing, challenge, audit assertion
-- **0.2.0** — Stronger verification results, assertion metadata, compact envelope exploration
-- **0.3.0** — Integration examples (liveness mapping, backend validator, lending / transfer / security flows)
-- **0.4.0** — Mobile reference helpers (session model, share payloads, dashboard schema)
-- **1.0.0** — Stable API and pub.dev release readiness
+See [doc/ROADMAP.md](doc/ROADMAP.md). **1.0.0** is the first stable SemVer release.
 
 ## License
 

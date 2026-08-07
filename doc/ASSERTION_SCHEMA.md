@@ -1,7 +1,7 @@
 # Assertion Schema
 
 This document describes the JSON shape of `SignedAuditAssertion` as exported by
-`toJson()` in version `0.4.0`.
+`toJson()` in version `1.0.0`.
 
 Semantic schema label: `tis_assertion_v1`.
 
@@ -40,7 +40,7 @@ Semantic schema label: `tis_assertion_v1`.
 {
   "schemaVersion": "tis_assertion_v1",
   "packageName": "transaction_intent_signer",
-  "packageVersion": "0.4.0",
+  "packageVersion": "1.0.0",
   "producer": "backend",
   "channel": "mobile_app",
   "correlationId": "corr_123",

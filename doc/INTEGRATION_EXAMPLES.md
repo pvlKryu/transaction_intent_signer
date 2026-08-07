@@ -29,6 +29,9 @@ dart run example/flows/security_settings_flow.dart
 | `flows/remote_lending_flow.dart` | Loan offer confirmation with optional liveness summary |
 | `flows/large_transfer_flow.dart` | Large transfer authorization |
 | `flows/security_settings_flow.dart` | Security settings / recovery phone confirmation |
+| `flows/add_new_payee_flow.dart` | Add new payee confirmation |
+| `mobile_reference_example.dart` | Session / share / dashboard helpers |
+| `cookbook.dart` | Short stable-API cookbook snippets |
 | `main.dart` | Runs the integration suite end-to-end |
 
 ## Liveness mapping note

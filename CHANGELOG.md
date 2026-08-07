@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0
+
+### Added
+
+- Stable public API review (`doc/API.md`)
+- SemVer stability policy (`doc/SEMVER.md`)
+- CI workflow (format, analyze, test, publish dry-run)
+- Publishing / pub.dev readiness checklist (`doc/PUBLISHING.md`)
+- Technical review notes (`doc/TECHNICAL_REVIEW.md`)
+- `CONTRIBUTING.md`
+- Cookbook example (`example/cookbook.dart`)
+- Add-new-payee demo flow (`example/flows/add_new_payee_flow.dart`)
+- `platforms` metadata for pub.dev
+
+### Changed
+
+- Package version stabilized at `1.0.0`
+- Removed unused `collection` dependency
+
 ## 0.4.0
 
 ### Added
