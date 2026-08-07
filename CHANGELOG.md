@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0
+
+### Added
+
+- `DemoConfirmationSession` shared session model for Flutter/host demo apps
+- `AssertionShareHelper` copy/share payloads (`json`, `prettyJson`, `compact`,
+  `summaryText`)
+- Enhanced `prettyJson` options (`sortMapKeys`, truncation, single-line) plus
+  `prettyCanonicalJson` / `encodeJson`
+- `DemoDashboardSnapshot` / `DemoDashboardEntry` schema (`tis_demo_dashboard_v1`)
+- Docs: `doc/MOBILE_REFERENCE.md`, `doc/DEMO_DASHBOARD_SCHEMA.md`
+- Example: `example/mobile_reference_example.dart`
+
 ## 0.3.0
 
 ### Added

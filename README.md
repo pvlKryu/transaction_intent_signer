@@ -98,7 +98,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^0.3.0
+  transaction_intent_signer: ^0.4.0
 ```
 
 ```bash
@@ -337,6 +337,32 @@ dart run example/liveness_mapping_example.dart
 See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) and
 [doc/INTEGRATION_EXAMPLES.md](doc/INTEGRATION_EXAMPLES.md).
 
+## Mobile reference helpers (0.4.0)
+
+Pure Dart helpers for a Flutter demo host — no Flutter dependency in this package:
+
+```dart
+final session = DemoConfirmationSession.draft(
+  sessionId: 'sess_1',
+  intent: intent,
+  flowLabel: 'remote_lending',
+);
+
+final share = const AssertionShareHelper().export(
+  assertion,
+  format: AssertionShareFormat.prettyJson,
+);
+
+final dashboard = DemoDashboardSnapshot.fromAssertions([assertion]);
+print(prettyJson(dashboard.toJson(), options: PrettyJsonOptions.sharePanel));
+```
+
+See [doc/MOBILE_REFERENCE.md](doc/MOBILE_REFERENCE.md) and run:
+
+```bash
+dart run example/mobile_reference_example.dart
+```
+
 ## Documentation
 
 - [Architecture](doc/ARCHITECTURE.md)
@@ -345,6 +371,8 @@ See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) and
 - [Threat model](doc/THREAT_MODEL.md)
 - [Integration guide](doc/INTEGRATION_GUIDE.md)
 - [Integration examples](doc/INTEGRATION_EXAMPLES.md)
+- [Mobile reference support](doc/MOBILE_REFERENCE.md)
+- [Demo dashboard schema](doc/DEMO_DASHBOARD_SCHEMA.md)
 - [WebAuthn boundaries](doc/WEB_AUTHN_BOUNDARIES.md)
 - [Roadmap](doc/ROADMAP.md)
 
@@ -355,7 +383,7 @@ See [doc/ROADMAP.md](doc/ROADMAP.md) for the full plan. Short version:
 - **0.1.0** — Core intent, hashing, challenge, audit assertion
 - **0.2.0** — Stronger verification results, assertion metadata, compact envelope exploration
 - **0.3.0** — Integration examples (liveness mapping, backend validator, lending / transfer / security flows)
-- **0.4.0** — Mobile reference app support
+- **0.4.0** — Mobile reference helpers (session model, share payloads, dashboard schema)
 - **1.0.0** — Stable API and pub.dev release readiness
 
 ## License

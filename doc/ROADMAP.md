@@ -32,10 +32,10 @@
 
 ## 0.4.0 — Mobile reference app support
 
-- Shared models for Flutter demo app
-- Copy/share assertion helpers
-- Better pretty JSON output
-- Demo dashboard schema
+- Shared models for Flutter demo app (`DemoConfirmationSession`)
+- Copy/share assertion helpers (`AssertionShareHelper`)
+- Better pretty JSON output (`PrettyJsonOptions`, `prettyCanonicalJson`)
+- Demo dashboard schema (`DemoDashboardSnapshot`, `tis_demo_dashboard_v1`)
 
 ## 1.0.0 — Stable API
 
