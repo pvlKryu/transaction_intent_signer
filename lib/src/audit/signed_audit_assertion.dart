@@ -3,6 +3,8 @@ import 'package:meta/meta.dart';
 import '../authenticator/authenticator_confirmation.dart';
 import '../hashing/operation_terms_hash.dart';
 import '../liveness/liveness_interaction_summary.dart';
+import 'assertion_metadata.dart';
+import 'package_info.dart';
 
 /// Privacy flags embedded in a [SignedAuditAssertion].
 @immutable
@@ -181,6 +183,8 @@ class SignedAuditAssertion {
     this.status = AuditAssertionStatus.created,
     this.privacy = const AssertionPrivacy(),
     this.statusFields = const AssertionStatusFields(),
+    this.schemaVersion = TransactionIntentSignerInfo.assertionSchemaVersion,
+    this.assertionMetadata = const AssertionMetadata(),
     this.metadata = const {},
   });
 
@@ -229,6 +233,12 @@ class SignedAuditAssertion {
   /// Required non-claim status fields.
   final AssertionStatusFields statusFields;
 
+  /// Semantic schema version for this artifact.
+  final String schemaVersion;
+
+  /// Structured assertion metadata for audit indexing.
+  final AssertionMetadata assertionMetadata;
+
   /// Signature algorithm label.
   final String signatureAlgorithm;
 
@@ -238,7 +248,8 @@ class SignedAuditAssertion {
   /// Canonical unsigned payload that was signed.
   final Map<String, Object?> unsignedPayload;
 
-  /// Additional opaque metadata.
+  /// Additional opaque metadata (merged into [assertionMetadata.extra] by
+  /// builders; retained for backward-compatible export).
   final Map<String, Object?> metadata;
 
   /// Convenience accessors matching the required assertion status names.
@@ -253,6 +264,76 @@ class SignedAuditAssertion {
   /// E-signature compliance non-claim.
   String get eSignatureCompliance => statusFields.eSignatureCompliance;
 
+  /// Reconstructs an assertion from a signed [unsignedPayload] map.
+  ///
+  /// Used by compact envelope decoding and audit importers.
+  factory SignedAuditAssertion.fromUnsignedPayload({
+    required Map<String, Object?> unsignedPayload,
+    required String signatureAlgorithm,
+    required String signature,
+    AuditAssertionStatus status = AuditAssertionStatus.created,
+  }) {
+    final authRaw = unsignedPayload['authenticatorConfirmation'];
+    final livenessRaw = unsignedPayload['livenessInteractionSummary'];
+    final privacyRaw = unsignedPayload['privacy'];
+    final metadataBlock = unsignedPayload['assertionMetadata'];
+    final legacyMetadata = unsignedPayload['metadata'];
+
+    final hashValue = unsignedPayload['operationTermsHash']! as String;
+
+    return SignedAuditAssertion(
+      assertionId: unsignedPayload['assertionId']! as String,
+      intentId: unsignedPayload['intentId']! as String,
+      operationId: unsignedPayload['operationId']! as String,
+      operationType: unsignedPayload['operationType']! as String,
+      institutionReference: unsignedPayload['institutionReference']! as String,
+      customerReference: unsignedPayload['customerReference']! as String,
+      operationTermsHash: OperationTermsHash(
+        algorithm: OperationTermsHashAlgorithms.sha256,
+        canonicalization: OperationTermsHashAlgorithms.canonicalJsonV1,
+        value: hashValue,
+      ),
+      challengeId: unsignedPayload['challengeId']! as String,
+      serverNonceReference: unsignedPayload['serverNonceReference']! as String,
+      authenticatorConfirmation: AuthenticatorConfirmation.fromJson(
+        Map<String, Object?>.from(authRaw as Map),
+      ),
+      livenessInteractionSummary: livenessRaw is Map
+          ? LivenessInteractionSummary.fromJson(
+              Map<String, Object?>.from(livenessRaw),
+            )
+          : null,
+      createdAt:
+          DateTime.parse(unsignedPayload['createdAt']! as String).toUtc(),
+      status: status,
+      privacy: privacyRaw is Map
+          ? AssertionPrivacy.fromJson(Map<String, Object?>.from(privacyRaw))
+          : const AssertionPrivacy(),
+      statusFields: AssertionStatusFields(
+        identityProofing: unsignedPayload['identityProofing'] as String? ??
+            AssertionStatusFields.notPerformedByThisPackage,
+        creditDecision: unsignedPayload['creditDecision'] as String? ??
+            AssertionStatusFields.notPerformed,
+        fraudDecision: unsignedPayload['fraudDecision'] as String? ??
+            AssertionStatusFields.notPerformed,
+        eSignatureCompliance:
+            unsignedPayload['eSignatureCompliance'] as String? ??
+                AssertionStatusFields.notClaimed,
+      ),
+      schemaVersion: unsignedPayload['schemaVersion'] as String? ??
+          TransactionIntentSignerInfo.assertionSchemaVersion,
+      assertionMetadata: metadataBlock is Map
+          ? AssertionMetadata.fromJson(Map<String, Object?>.from(metadataBlock))
+          : const AssertionMetadata(),
+      signatureAlgorithm: signatureAlgorithm,
+      signature: signature,
+      unsignedPayload: unsignedPayload,
+      metadata: legacyMetadata is Map
+          ? Map<String, Object?>.from(legacyMetadata)
+          : const {},
+    );
+  }
+
   /// Deserializes from JSON.
   factory SignedAuditAssertion.fromJson(Map<String, Object?> json) {
     final hashRaw = json['operationTermsHash'];
@@ -261,6 +342,7 @@ class SignedAuditAssertion {
     final privacyRaw = json['privacy'];
     final unsignedRaw = json['unsignedPayload'];
     final metadataRaw = json['metadata'];
+    final assertionMetadataRaw = json['assertionMetadata'];
 
     return SignedAuditAssertion(
       assertionId: json['assertionId']! as String,
@@ -299,6 +381,13 @@ class SignedAuditAssertion {
         eSignatureCompliance: json['eSignatureCompliance'] as String? ??
             AssertionStatusFields.notClaimed,
       ),
+      schemaVersion: json['schemaVersion'] as String? ??
+          TransactionIntentSignerInfo.assertionSchemaVersion,
+      assertionMetadata: assertionMetadataRaw is Map
+          ? AssertionMetadata.fromJson(
+              Map<String, Object?>.from(assertionMetadataRaw),
+            )
+          : const AssertionMetadata(),
       signatureAlgorithm: json['signatureAlgorithm']! as String,
       signature: json['signature']! as String,
       unsignedPayload: unsignedRaw is Map
@@ -312,6 +401,7 @@ class SignedAuditAssertion {
 
   /// Serializes to JSON.
   Map<String, Object?> toJson() => {
+        'schemaVersion': schemaVersion,
         'assertionId': assertionId,
         'intentId': intentId,
         'operationId': operationId,
@@ -331,6 +421,7 @@ class SignedAuditAssertion {
         'creditDecision': creditDecision,
         'fraudDecision': fraudDecision,
         'eSignatureCompliance': eSignatureCompliance,
+        'assertionMetadata': assertionMetadata.toJson(),
         'signatureAlgorithm': signatureAlgorithm,
         'signature': signature,
         'unsignedPayload': unsignedPayload,
@@ -343,6 +434,8 @@ class SignedAuditAssertion {
     String? signature,
     Map<String, Object?>? unsignedPayload,
     Map<String, Object?>? metadata,
+    AssertionMetadata? assertionMetadata,
+    String? schemaVersion,
   }) {
     return SignedAuditAssertion(
       assertionId: assertionId,
@@ -360,6 +453,8 @@ class SignedAuditAssertion {
       status: status ?? this.status,
       privacy: privacy,
       statusFields: statusFields,
+      schemaVersion: schemaVersion ?? this.schemaVersion,
+      assertionMetadata: assertionMetadata ?? this.assertionMetadata,
       signatureAlgorithm: signatureAlgorithm,
       signature: signature ?? this.signature,
       unsignedPayload: unsignedPayload ?? this.unsignedPayload,

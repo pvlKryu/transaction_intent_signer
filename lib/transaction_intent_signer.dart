@@ -7,8 +7,12 @@
 /// fraud, credit, legal, or compliance decisions.
 library transaction_intent_signer;
 
+export 'src/audit/assertion_metadata.dart';
 export 'src/audit/audit_assertion_builder.dart';
+export 'src/audit/audit_assertion_verification_result.dart';
 export 'src/audit/audit_assertion_verifier.dart';
+export 'src/audit/compact_assertion_envelope.dart';
+export 'src/audit/package_info.dart';
 export 'src/audit/signed_audit_assertion.dart';
 export 'src/authenticator/authenticator_confirmation.dart';
 export 'src/authenticator/authenticator_type.dart';

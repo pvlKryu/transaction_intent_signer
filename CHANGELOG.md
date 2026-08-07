@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0
+
+### Added
+
+- Stronger `AuditAssertionVerificationResult` with `failureCode` and `checks`
+- `VerificationFailureCode` and `VerificationCheck` models
+- Structured `AssertionMetadata` (`producer`, `channel`, `correlationId`, etc.)
+- `schemaVersion` (`tis_assertion_v1`) on signed assertions
+- `TransactionIntentSignerInfo` package/schema constants
+- Experimental `CompactAssertionEnvelope` (JWS-style three-segment encoding)
+- `SignedAuditAssertion.fromUnsignedPayload` helper
+- Broader payload-drift tamper detection in the verifier
+- Documentation: `doc/AUDIT_TRAILS.md` and updated assertion schema notes
+
+### Changed
+
+- `AuditAssertionBuilder` embeds `schemaVersion` + `assertionMetadata` into the
+  signed unsigned payload
+- Legacy `metadata` map entries are merged into `assertionMetadata.extra`
+
 ## 0.1.0
 
 ### Added

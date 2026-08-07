@@ -9,6 +9,8 @@ import '../hashing/canonical_json_encoder.dart';
 import '../intent/transaction_intent.dart';
 import '../liveness/liveness_interaction_summary.dart';
 import '../signing/assertion_signer.dart';
+import 'assertion_metadata.dart';
+import 'package_info.dart';
 import 'signed_audit_assertion.dart';
 
 /// Builds [SignedAuditAssertion] artifacts from intent confirmation inputs.
@@ -37,6 +39,9 @@ class AuditAssertionBuilder {
   ///
   /// Validates that [challenge] belongs to [intent] and is not expired, then
   /// signs a deterministic unsigned payload.
+  ///
+  /// [metadata] entries are merged into [assertionMetadata].extra for
+  /// backward compatibility with 0.1.x call sites.
   SignedAuditAssertion build({
     required TransactionIntent intent,
     required IntentChallenge challenge,
@@ -44,6 +49,7 @@ class AuditAssertionBuilder {
     LivenessInteractionSummary? livenessInteractionSummary,
     DateTime? createdAt,
     String? assertionId,
+    AssertionMetadata? assertionMetadata,
     Map<String, Object?> metadata = const {},
   }) {
     _ensureChallengeMatchesIntent(intent, challenge);
@@ -57,8 +63,11 @@ class AuditAssertionBuilder {
     final id = assertionId ?? 'assert_${uuid.v4()}';
     final privacy = AssertionPrivacy.fromLiveness(livenessInteractionSummary);
     const statusFields = AssertionStatusFields();
+    final resolvedMetadata =
+        (assertionMetadata ?? const AssertionMetadata()).withExtra(metadata);
 
     final unsignedPayload = <String, Object?>{
+      'schemaVersion': TransactionIntentSignerInfo.assertionSchemaVersion,
       'assertionId': id,
       'intentId': intent.intentId,
       'operationId': intent.operationId,
@@ -77,6 +86,7 @@ class AuditAssertionBuilder {
       'creditDecision': statusFields.creditDecision,
       'fraudDecision': statusFields.fraudDecision,
       'eSignatureCompliance': statusFields.eSignatureCompliance,
+      'assertionMetadata': resolvedMetadata.toJson(),
       if (metadata.isNotEmpty) 'metadata': metadata,
     };
 
@@ -99,6 +109,8 @@ class AuditAssertionBuilder {
       status: AuditAssertionStatus.created,
       privacy: privacy,
       statusFields: statusFields,
+      schemaVersion: TransactionIntentSignerInfo.assertionSchemaVersion,
+      assertionMetadata: resolvedMetadata,
       signatureAlgorithm: signer.algorithm,
       signature: signature,
       unsignedPayload: unsignedPayload,

@@ -15,11 +15,11 @@
 
 ## 0.2.0 — Better assertion schema and verifier
 
-- Stronger validation result model
-- More assertion metadata
-- JWS-style assertion format exploration
+- Stronger validation result model (`failureCode`, `checks`)
+- More assertion metadata (`AssertionMetadata`, `schemaVersion`)
+- JWS-style assertion format exploration (`CompactAssertionEnvelope`)
 - More tamper detection tests
-- More documentation around audit trails
+- More documentation around audit trails (`doc/AUDIT_TRAILS.md`)
 
 ## 0.3.0 — Integration examples
 

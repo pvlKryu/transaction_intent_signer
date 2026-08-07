@@ -69,6 +69,11 @@ void main() {
     livenessInteractionSummary: liveness,
     createdAt: now.add(const Duration(seconds: 45)),
     assertionId: 'assert_demo_001',
+    assertionMetadata: const AssertionMetadata(
+      producer: 'example',
+      channel: 'mobile_app',
+      correlationId: 'corr_demo_001',
+    ),
   );
 
   print('Signed audit assertion:\n${prettyJson(assertion.toJson())}\n');
@@ -79,6 +84,8 @@ void main() {
   );
   final ok = verifier.verify(assertion, challenge: challenge, now: now);
   print('Verification valid: ${ok.isValid}');
+  print('Failure code: ${ok.failureCode.wireName}');
+  print('Checks: ${ok.checks.map((c) => '${c.name}=${c.passed}').join(', ')}');
 
   // 8) Demonstrate tampering detection
   final tampered = assertion.copyWith(
@@ -89,5 +96,10 @@ void main() {
   );
   final bad = verifier.verify(tampered, challenge: challenge, now: now);
   print('Tampered verification valid: ${bad.isValid}');
+  print('Tampered failure code: ${bad.failureCode.wireName}');
   print('Tampered failure reason: ${bad.failureReason}');
+
+  // 9) Optional compact envelope exploration
+  final compact = const CompactAssertionEnvelope().encode(assertion);
+  print('\nCompact envelope segments: ${compact.split('.').length}');
 }

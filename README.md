@@ -98,7 +98,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^0.1.0
+  transaction_intent_signer: ^0.2.0
 ```
 
 ```bash
@@ -146,6 +146,11 @@ final assertion = AuditAssertionBuilder(
   intent: intent,
   challenge: challenge,
   authenticatorConfirmation: confirmation,
+  assertionMetadata: const AssertionMetadata(
+    producer: 'backend',
+    channel: 'mobile_app',
+    correlationId: 'corr_demo_001',
+  ),
 );
 
 final result = AuditAssertionVerifier(
@@ -153,7 +158,12 @@ final result = AuditAssertionVerifier(
 ).verify(assertion, challenge: challenge);
 
 print(result.isValid);
+print(result.failureCode.wireName);
 print(prettyJson(assertion.toJson()));
+
+// Optional exploratory compact transport encoding (not full RFC 7515 JWS):
+final compact = const CompactAssertionEnvelope().encode(assertion);
+print(compact.split('.').length); // 3
 ```
 
 > **Demo signing is provided for reference and testing only.** Production systems must use secure server-side key management and institution-specific compliance controls.
@@ -330,6 +340,7 @@ See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) for backend and mobile 
 
 - [Architecture](doc/ARCHITECTURE.md)
 - [Assertion schema](doc/ASSERTION_SCHEMA.md)
+- [Audit trails](doc/AUDIT_TRAILS.md)
 - [Threat model](doc/THREAT_MODEL.md)
 - [Integration guide](doc/INTEGRATION_GUIDE.md)
 - [WebAuthn boundaries](doc/WEB_AUTHN_BOUNDARIES.md)
@@ -340,7 +351,7 @@ See [doc/INTEGRATION_GUIDE.md](doc/INTEGRATION_GUIDE.md) for backend and mobile 
 See [doc/ROADMAP.md](doc/ROADMAP.md) for the full plan. Short version:
 
 - **0.1.0** — Core intent, hashing, challenge, audit assertion
-- **0.2.0** — Stronger verification / schema exploration
+- **0.2.0** — Stronger verification results, assertion metadata, compact envelope exploration
 - **0.3.0** — Integration examples
 - **0.4.0** — Mobile reference app support
 - **1.0.0** — Stable API and pub.dev release readiness

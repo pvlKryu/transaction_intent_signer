@@ -81,3 +81,7 @@ The same pipeline applies to:
   host; this package stays pure Dart.
 - **Explicit non-claims** — every assertion embeds status fields such as
   `identityProofing: not_performed_by_this_package`.
+- **Structured metadata** — `AssertionMetadata` + `schemaVersion` support audit
+  indexing without over-claiming outcomes.
+- **Transport exploration** — optional `CompactAssertionEnvelope` is JWS-style,
+  not a full RFC 7515 implementation.
