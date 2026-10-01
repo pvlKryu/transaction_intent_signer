@@ -12,7 +12,7 @@ import 'support/demo_helpers.dart';
 
 /// Runs the integration example suite.
 void main() {
-  print('=== transaction_intent_signer 1.0.0 integration examples ===');
+  print('=== transaction_intent_signer 1.0.1 integration examples ===');
 
   // 1) Liveness mapping
   section('1) flutter_liveness_actions mapping');

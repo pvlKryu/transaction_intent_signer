@@ -99,7 +99,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^1.0.0
+  transaction_intent_signer: ^1.0.1
 ```
 
 ```bash
@@ -384,7 +384,8 @@ dart run example/mobile_reference_example.dart
 
 ## Roadmap
 
-See [doc/ROADMAP.md](doc/ROADMAP.md). **1.0.0** is the first stable SemVer release.
+See [doc/ROADMAP.md](doc/ROADMAP.md). **1.0.x** is the stable SemVer line
+(`1.0.0` API freeze, `1.0.1+` maintenance).
 
 ## License
 

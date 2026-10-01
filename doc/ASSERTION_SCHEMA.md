@@ -40,7 +40,7 @@ Semantic schema label: `tis_assertion_v1`.
 {
   "schemaVersion": "tis_assertion_v1",
   "packageName": "transaction_intent_signer",
-  "packageVersion": "1.0.0",
+  "packageVersion": "1.0.1",
   "producer": "backend",
   "channel": "mobile_app",
   "correlationId": "corr_123",

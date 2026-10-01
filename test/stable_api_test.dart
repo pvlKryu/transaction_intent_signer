@@ -47,8 +47,8 @@ void main() {
     );
   });
 
-  test('package reports 1.0.0 stable version constants', () {
-    expect(TransactionIntentSignerInfo.packageVersion, '1.0.0');
+  test('package reports 1.0.1 version constants', () {
+    expect(TransactionIntentSignerInfo.packageVersion, '1.0.1');
     expect(
       TransactionIntentSignerInfo.assertionSchemaVersion,
       'tis_assertion_v1',

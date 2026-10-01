@@ -1,6 +1,6 @@
 # Release / pub.dev Readiness
 
-Checklist used for the `1.0.0` release candidate. This package is prepared for
+Checklist used for the `1.0.x` release line. This package is prepared for
 publication; maintainers should still run the final publish command intentionally.
 
 ## Required local checks
@@ -26,7 +26,7 @@ pana .
 - [x] `topics`
 - [x] `platforms` declared (pure Dart)
 - [x] MIT `LICENSE`
-- [x] `CHANGELOG.md` entry for `1.0.0`
+- [x] `CHANGELOG.md` entry for the release version
 - [x] README suitable for pub.dev
 - [x] `DISCLAIMER.md` / `SECURITY.md` present
 - [x] Example entrypoints runnable

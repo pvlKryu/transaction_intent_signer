@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1
+
+### Changed
+
+- Relaxed `lints` / `test` version ranges so newer Dart SDKs can resolve current
+  tooling while older SDKs (e.g. 3.4) keep working
+- Refreshed dependency lockfile within existing constraints
+- Minor docs / example banner maintenance for an active 1.0.x line
+
 ## 1.0.0
 
 ### Added

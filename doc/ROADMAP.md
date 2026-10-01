@@ -18,16 +18,14 @@ Completed.
 
 ## 1.0.0 — Stable API
 
-Completed:
+Completed.
 
-- API review (`doc/API.md`)
-- SemVer stability docs (`doc/SEMVER.md`)
-- More examples (cookbook, add-new-payee flow)
-- CI (`.github/workflows/ci.yml`)
-- pub.dev release readiness (`doc/PUBLISHING.md`)
-- technical review notes incorporated (`doc/TECHNICAL_REVIEW.md`)
+## 1.0.1 — Maintenance
 
-## After 1.0.0 (future)
+- Dependency range refresh for newer Dart toolchains
+- Docs / example maintenance on the stable 1.0.x line
+
+## After 1.0.x (future)
 
 - Production `AssertionSigner` examples (asymmetric / KMS-backed)
 - Optional stronger JWS profile exploration
