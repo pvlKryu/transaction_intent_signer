@@ -1,8 +1,8 @@
 # transaction_intent_signer
 
 [![pub package](https://img.shields.io/pub/v/transaction_intent_signer.svg)](https://pub.dev/packages/transaction_intent_signer)
+[![tests](https://img.shields.io/github/actions/workflow/status/pvlKryu/transaction_intent_signer/ci.yml?branch=main&label=tests)](https://github.com/pvlKryu/transaction_intent_signer/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![CI](https://github.com/pvlKryu/transaction_intent_signer/actions/workflows/ci.yml/badge.svg)](https://github.com/pvlKryu/transaction_intent_signer/actions/workflows/ci.yml)
 
 Pure Dart package for building **audit-friendly transaction intent confirmation flows**.
 

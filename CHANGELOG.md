@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
   tooling while older SDKs (e.g. 3.4) keep working
 - Refreshed dependency lockfile within existing constraints
 - Minor docs / example banner maintenance for an active 1.0.x line
+- README `tests` badge for pub.dev (GitHub Actions status)
 
 ## 1.0.0
 
