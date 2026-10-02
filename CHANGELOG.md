@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.2
+
+### Fixed
+
+- Removed unnecessary library name to clear pub.dev static analysis INFO
+  (`unnecessary_library_name`) and restore a clean analysis score
+
 ## 1.0.1
 
 ### Changed

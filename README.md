@@ -99,7 +99,7 @@ The backend creates a transaction-specific challenge that binds the operation ha
 
 ```yaml
 dependencies:
-  transaction_intent_signer: ^1.0.1
+  transaction_intent_signer: ^1.0.2
 ```
 
 ```bash

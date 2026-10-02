@@ -87,7 +87,7 @@ void main() {
         assertion.assertionMetadata.packageName,
         'transaction_intent_signer',
       );
-      expect(assertion.assertionMetadata.packageVersion, '1.0.1');
+      expect(assertion.assertionMetadata.packageVersion, '1.0.2');
     });
 
     test('assertion metadata is included and round-trips', () {

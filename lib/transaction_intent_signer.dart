@@ -5,7 +5,7 @@
 /// The package creates audit-friendly technical artifacts that can support
 /// transaction intent verification workflows. It does not make identity,
 /// fraud, credit, legal, or compliance decisions.
-library transaction_intent_signer;
+library;
 
 export 'src/audit/assertion_metadata.dart';
 export 'src/audit/audit_assertion_builder.dart';
